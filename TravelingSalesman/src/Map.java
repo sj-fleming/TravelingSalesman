@@ -66,9 +66,14 @@ public class Map {
 				String cityName = scanner.next();
 				int index = findIndex(cityName);
 				while(scanner.hasNext()) {
-					
-				}
-					
+					if(scanner.hasNextInt()) {
+						int distance = Integer.parseInt(scanner.next());
+						if(scanner.hasNext()) { //is this necessary?
+							int index2 = findIndex(scanner.next());
+							map[index][index2] = distance;		
+						}
+					}	
+				}	
 			}
 		}
 	}
