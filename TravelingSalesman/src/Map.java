@@ -26,7 +26,7 @@ public class Map {
 //			cities[i] = new City(i, cityNames[i]);
 //		}
 		
-		cities = new City[numCities];
+		
 		File file = new File(citiesFile);
 		Scanner scanner = null;
 		try {
@@ -36,10 +36,48 @@ public class Map {
 			System.exit(0);
 		}
 		
-		while (scanner.hasNextLine()) {
+		if (scanner.hasNextLine()) {
 			numCities = Integer.parseInt(scanner.nextLine());
-			//each line holds city, distance, and next city?
+			cities = new City[numCities];
+			
+			int i = 0;
+			while (scanner.hasNextLine()) {
+				//each line holds city, distance, and next city, etc.
+				cities[i] = new City(i, scanner.next()); //gets the first word on each line
+				scanner.nextLine();
+				i++;
+			}
 		}
+
+		//new scanner to read the file again but for adjacent cities and distances
+		try {
+			scanner = new Scanner(file);
+		} catch (FileNotFoundException ex) {
+			System.out.println("*** Cannot open map input***"); // if input is invalid
+			System.exit(0);
+		}
+		
+		if (scanner.hasNextLine()) {
+			scanner.nextLine();
+			
+			int i = 0;
+			while (scanner.hasNextLine()) {
+				//each line holds city, distance, and next city, etc.
+				String cityName = scanner.next();
+				int index = findIndex(cityName);
+				while(scanner.hasNext()) {
+					
+				}
+					
+			}
+		}
+	}
+	
+	public int findIndex(String s) {
+		for(City c : cities)
+			if (c.getName().equals(s))
+				return c.getIndex();
+		return -1;
 	}
 
 }
