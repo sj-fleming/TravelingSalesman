@@ -1,0 +1,5 @@
+4
+Philadelphia 10 Portland 5 DC
+Portland 10 Philadelphia 7 Sacramento
+DC 5 Philadelphia 12 Sacramento
+Sacramento 7 Portland 12 DC

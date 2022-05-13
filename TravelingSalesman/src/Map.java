@@ -11,16 +11,16 @@ import java.util.Scanner;
  */
 public class Map {
 	
-	int numCities;
+	static int numCities;
 	//adjacency list - array of linked lists?
-	City[] cities;
+	static City[] cities;
 	/*
 	 * 2D array of integers that holds the distances between cities
 	 */
-	int[][] map = new int[numCities][numCities];
+	static int[][] map;
 	public static String citiesFile = "cities.txt";
 	
-	public void createMap(int[] distances, String[] cityNames) {
+	public static void createMap() {
 		//read in list of cities and add them to the array
 //		for (int i = 0; i < numCities; i++) { //yassslay (- Natalie)
 //			cities[i] = new City(i, cityNames[i]);
@@ -39,11 +39,14 @@ public class Map {
 		if (scanner.hasNextLine()) {
 			numCities = Integer.parseInt(scanner.nextLine());
 			cities = new City[numCities];
+			map = new int[numCities][numCities];
+//			System.out.println("test 1, num cities: " + numCities);
 			
 			int i = 0;
 			while (scanner.hasNextLine()) {
 				//each line holds city, distance, and next city, etc.
 				cities[i] = new City(i, scanner.next()); //gets the first word on each line
+//				System.out.println(cities[i].getName());
 				scanner.nextLine();
 				i++;
 			}
@@ -57,11 +60,12 @@ public class Map {
 			System.exit(0);
 		}
 		
-		if (scanner.hasNextLine()) {
-			scanner.nextLine();
+//		if (scanner.hasNextLine()) {
+//			scanner.nextLine();
 			
-			int i = 0;
+		
 			while (scanner.hasNextLine()) {
+				scanner.nextLine();
 				//each line holds city, distance, and next city, etc.
 				String cityName = scanner.next();
 				int index = findIndex(cityName);
@@ -69,20 +73,43 @@ public class Map {
 					if(scanner.hasNextInt()) {
 						int distance = Integer.parseInt(scanner.next());
 						if(scanner.hasNext()) { //is this necessary?
-							int index2 = findIndex(scanner.next());
-							map[index][index2] = distance;		
+							int index2 = findIndex(scanner.next()); //cities with two words?
+							map[index][index2] = distance;	
+							System.out.println("city 1: " + cities[index].getName() + " city 2: " + cities[index2].getName() + " distance: " + map[index][index2]);
 						}
 					}	
-				}	
+				}
+				System.out.println(scanner.hasNextLine());
 			}
 		}
-	}
+//	}
 	
-	public int findIndex(String s) {
+	public static int findIndex(String s) {
 		for(City c : cities)
 			if (c.getName().equals(s))
 				return c.getIndex();
 		return -1;
+	}
+	
+	public static void printMap() {
+		for(int i = 0; i < numCities; i++)
+			System.out.printf("%5d", cities[i].getName()); //prints the top row of the map with the city names
+		System.out.println();
+		for (int i = 0; i < numCities; i++) {
+			System.out.printf("%5d", cities[i].getName());
+			for(int j = 0; j < numCities; j++) {
+				System.out.printf("%5d", map[i][j]);
+			}
+			System.out.println();
+		}
+				
+	}
+	
+	public static void main(String[] args) {
+		System.out.println("test");
+		createMap();
+		System.out.println("num cities: " + numCities);
+		printMap();
 	}
 
 }
