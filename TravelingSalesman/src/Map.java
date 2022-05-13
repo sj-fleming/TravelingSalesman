@@ -58,27 +58,23 @@ public class Map {
 		} catch (FileNotFoundException ex) {
 			System.out.println("*** Cannot open map input***"); // if input is invalid
 			System.exit(0);
-		}
-		
-//		if (scanner.hasNextLine()) {
-//			scanner.nextLine();
-			
+		}			
 		
 			while (scanner.hasNextLine()) {
 				scanner.nextLine();
 				//each line holds city, distance, and next city, etc.
+				if(!scanner.hasNext())
+					break;
 				String cityName = scanner.next();
 				int index = findIndex(cityName);
-				while(scanner.hasNext()) {
-					if(scanner.hasNextInt()) {
+					while(scanner.hasNextInt()) {
 						int distance = Integer.parseInt(scanner.next());
 						if(scanner.hasNext()) { //is this necessary?
 							int index2 = findIndex(scanner.next()); //cities with two words?
 							map[index][index2] = distance;	
 							System.out.println("city 1: " + cities[index].getName() + " city 2: " + cities[index2].getName() + " distance: " + map[index][index2]);
 						}
-					}	
-				}
+					}
 				System.out.println(scanner.hasNextLine());
 			}
 		}
@@ -92,13 +88,14 @@ public class Map {
 	}
 	
 	public static void printMap() {
+		System.out.printf("%15s", "");
 		for(int i = 0; i < numCities; i++)
-			System.out.printf("%5d", cities[i].getName()); //prints the top row of the map with the city names
+			System.out.printf("%15s", cities[i].getName()); //prints the top row of the map with the city names
 		System.out.println();
 		for (int i = 0; i < numCities; i++) {
-			System.out.printf("%5d", cities[i].getName());
+			System.out.printf("%15s", cities[i].getName());
 			for(int j = 0; j < numCities; j++) {
-				System.out.printf("%5d", map[i][j]);
+				System.out.printf("%15d", map[i][j]);
 			}
 			System.out.println();
 		}
