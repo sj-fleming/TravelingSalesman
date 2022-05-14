@@ -1,7 +1,9 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Scanner;
+import java.util.Stack;
 
 /*
  * Sarah Fleming
@@ -100,6 +102,26 @@ public class Map {
 			System.out.println();
 		}
 				
+	}
+	
+	public static City[] traverse(int index, City[] visited, Stack<City> stack, City root) {
+		if (index == visited.length)
+			return visited;
+		if(index == 0) {
+			visited[index] = root;
+			//push cities adjacent to root onto stack
+		}
+		else
+			visited[index] = stack.pop();
+		for(int i = 0; i < numCities; i++) {
+			if (map[visited[index].getIndex()][i] != 0 && !Arrays.asList(visited).contains(cities[i])) //if the city a and city b are adjacent to each other and city b has not already been visited
+				stack.push(cities[i]);
+		}
+		return visited;
+	}
+	
+	public static void findBestPath(int minDistance, int currentDistance, City[] visited) {
+		
 	}
 	
 	public static void main(String[] args) {
