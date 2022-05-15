@@ -105,7 +105,7 @@ public class Map {
 	}
 	
 	public static City[] traverse(int index, City[] visited, Stack<City> stack, City root) {
-		if (index == visited.length)
+		if (index == visited.length) //change to traverse from current index until you get back to root?
 			return visited;
 		if(index == 0) {
 			visited[index] = root;
