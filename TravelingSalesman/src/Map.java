@@ -104,8 +104,9 @@ public class Map {
 				
 	}
 	
-	public static City[] traverseAllCities(int index, City[] visited, Stack<City> stack, City root) {
-		if (index == visited.length) //change to traverse from current index until you get back to root?
+	//traverses the map from the specified index until it reaches the root
+	public static City[] traverse(int index, City[] visited, Stack<City> stack, City root) {
+		if (index == visited.length) //TO DO change base case and recursive case to stop before root
 			return visited;
 		if(index == 0) {
 			visited[index] = root;
@@ -117,7 +118,25 @@ public class Map {
 			if (map[visited[index].getIndex()][i] != 0 && !Arrays.asList(visited).contains(cities[i])) //if the city a and city b are adjacent to each other and city b has not already been visited
 				stack.push(cities[i]);
 		}
-		traverseAllCities(index++, visited, stack, root);
+		traverse(index++, visited, stack, root);
+		return visited;
+	}
+	
+	//visits all the cities
+	public static City[] traverseAllCities(int index, City[] visited, Stack<City> stack, City root) {
+		if (index == visited.length)
+			return visited;
+		if(index == 0) {
+			visited[index] = root;
+		}
+		else
+			visited[index] = stack.pop();
+		//push adjacent cities onto stack
+		for(int i = 0; i < numCities; i++) {
+			if (map[visited[index].getIndex()][i] != 0 && !Arrays.asList(visited).contains(cities[i])) //if the city a and city b are adjacent to each other and city b has not already been visited
+				stack.push(cities[i]);
+		}
+		traverseAllCities(index+1, visited, stack, root);
 		return visited;
 	}
 	
@@ -130,6 +149,7 @@ public class Map {
 		createMap();
 		System.out.println("num cities: " + numCities);
 		printMap();
+		System.out.println(Arrays.toString(traverseAllCities(0, new City[numCities], new Stack<City>(), cities[0])));
 	}
 
 }

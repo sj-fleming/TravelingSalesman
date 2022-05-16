@@ -29,4 +29,8 @@ public class City {
 		return name;
 	}
 	
+	public String toString() {
+		return name;
+	}
+	
 }
