@@ -112,7 +112,7 @@ public class Map {
 		}
 		else
 			visited[index] = stack.pop();
-		//push cities adjacent onto stack
+		//push adjacent cities onto stack
 		for(int i = 0; i < numCities; i++) {
 			if (map[visited[index].getIndex()][i] != 0 && !Arrays.asList(visited).contains(cities[i])) //if the city a and city b are adjacent to each other and city b has not already been visited
 				stack.push(cities[i]);
