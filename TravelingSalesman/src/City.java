@@ -33,4 +33,13 @@ public class City {
 		return name;
 	}
 	
+	@Override
+	public boolean equals(Object other) {
+		if(!(other instanceof City))
+			return false;
+		if(((City)other).getName().equals(this.getName()) && ((City)other).getIndex() == this.getIndex())
+			return true;
+		return false;
+	}
+	
 }

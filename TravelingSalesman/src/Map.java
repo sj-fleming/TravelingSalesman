@@ -74,10 +74,10 @@ public class Map {
 						if(scanner.hasNext()) { //is this necessary?
 							int index2 = findIndex(scanner.next()); //cities with two words?
 							map[index][index2] = distance;	
-							System.out.println("city 1: " + cities[index].getName() + " city 2: " + cities[index2].getName() + " distance: " + map[index][index2]);
+//							System.out.println("city 1: " + cities[index].getName() + " city 2: " + cities[index2].getName() + " distance: " + map[index][index2]);
 						}
 					}
-				System.out.println(scanner.hasNextLine());
+//				System.out.println(scanner.hasNextLine());
 			}
 		}
 //	}
@@ -105,12 +105,16 @@ public class Map {
 	}
 	
 	//traverses the map from the specified index until it reaches the root
-	public static City[] traverse(int index, City[] visited, Stack<City> stack, City root) {
-		if (index == visited.length) //TO DO change base case and recursive case to stop before root
+	public static City[] traverse(int index, City[] visited, Stack<City> stack, City start, City root) {
+		if(index == visited.length)
+			return visited;
+		if (index != 0 && visited[index-1] != null && visited[index-1].equals(root)) //returns when it gets back to the starting city (root)
 			return visited;
 		if(index == 0) {
-			visited[index] = root;
+			visited[index] = start;
 		}
+//		else if(stack.isEmpty())
+//			visited[index] = cities[index];
 		else
 			visited[index] = stack.pop();
 		//push adjacent cities onto stack
@@ -118,7 +122,7 @@ public class Map {
 			if (map[visited[index].getIndex()][i] != 0 && !Arrays.asList(visited).contains(cities[i])) //if the city a and city b are adjacent to each other and city b has not already been visited
 				stack.push(cities[i]);
 		}
-		traverse(index++, visited, stack, root);
+		traverse(index+1, visited, stack, start, root);
 		return visited;
 	}
 	
@@ -136,6 +140,8 @@ public class Map {
 			if (map[visited[index].getIndex()][i] != 0 && !Arrays.asList(visited).contains(cities[i])) //if the city a and city b are adjacent to each other and city b has not already been visited
 				stack.push(cities[i]);
 		}
+//		System.out.println(Arrays.toString(visited));
+//		System.out.println(stack);
 		traverseAllCities(index+1, visited, stack, root);
 		return visited;
 	}
@@ -145,11 +151,11 @@ public class Map {
 	}
 	
 	public static void main(String[] args) {
-		System.out.println("test");
 		createMap();
-		System.out.println("num cities: " + numCities);
+//		System.out.println("num cities: " + numCities);
 		printMap();
 		System.out.println(Arrays.toString(traverseAllCities(0, new City[numCities], new Stack<City>(), cities[0])));
+		System.out.println(Arrays.toString(traverse(0, new City[numCities], new Stack<City>(), cities[2], cities[0])));
 	}
 
 }
