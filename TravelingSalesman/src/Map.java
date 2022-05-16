@@ -104,7 +104,7 @@ public class Map {
 				
 	}
 	
-	public static City[] traverse(int index, City[] visited, Stack<City> stack, City root) {
+	public static City[] traverseAllCities(int index, City[] visited, Stack<City> stack, City root) {
 		if (index == visited.length) //change to traverse from current index until you get back to root?
 			return visited;
 		if(index == 0) {
@@ -117,7 +117,7 @@ public class Map {
 			if (map[visited[index].getIndex()][i] != 0 && !Arrays.asList(visited).contains(cities[i])) //if the city a and city b are adjacent to each other and city b has not already been visited
 				stack.push(cities[i]);
 		}
-		traverse(index++, visited, stack, root);
+		traverseAllCities(index++, visited, stack, root);
 		return visited;
 	}
 	
