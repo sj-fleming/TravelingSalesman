@@ -113,12 +113,12 @@ public class Map {
 		if(index == 0) {
 			visited[index] = start;
 		}
-//		else if(stack.isEmpty())
-//			visited[index] = cities[index];
+		else if(stack.isEmpty())
+			visited[index] = cities[index];
 		else
 			visited[index] = stack.pop();
 		//push adjacent cities onto stack
-		for(int i = 0; i < numCities; i++) {
+		for(int i = 0; i < visited.length; i++) {
 			if (map[visited[index].getIndex()][i] != 0 && !Arrays.asList(visited).contains(cities[i])) //if the city a and city b are adjacent to each other and city b has not already been visited
 				stack.push(cities[i]);
 		}
@@ -140,14 +140,52 @@ public class Map {
 			if (map[visited[index].getIndex()][i] != 0 && !Arrays.asList(visited).contains(cities[i])) //if the city a and city b are adjacent to each other and city b has not already been visited
 				stack.push(cities[i]);
 		}
-//		System.out.println(Arrays.toString(visited));
-//		System.out.println(stack);
+		System.out.println(Arrays.toString(visited));
+		System.out.println(stack);
 		traverseAllCities(index+1, visited, stack, root);
 		return visited;
 	}
 	
-	public static void findBestPath(int minDistance, int currentDistance, City[] visited) {
+	public static int totalDistance(City[] visited) {
+		int distance = 0;
+		for(int i = 0; i < visited.length - 1; i++)
+			distance += map[visited[i].getIndex()][visited[i+1].getIndex()]; //check if null?
+		if (visited[visited.length-1] != null)
+			distance += map[0][visited[visited.length-1].getIndex()];
+		return distance;
+	}
+	
+	public static City[] findBestPath(int x, int y, City[] bestPath, City[] visited, Stack<City> stack) {
+		if(x == visited.length)
+			return bestPath;
+		if(y == visited.length) {
+			if(totalDistance(visited) < totalDistance(bestPath))
+				bestPath = visited;
+			return findBestPath(0, 0, bestPath, new City[numCities], new Stack<City>());
+		}
 		
+		//idk how to do this:
+			//set index 0 of visited, then use traverse method to find all possible permutations starting with index 0 (then increase index)
+				//won't work - traverse could repeat (check before transferring to visited array?)
+		
+		
+//		for(int i = y; i < visited.length; i++)
+//			visited[x] = cities[y];
+		
+		
+		
+//		if(stack.isEmpty())
+//			visited[x] = cities[0];
+//		else
+//			visited[x] = stack.pop();
+//		//push adjacent cities onto stack
+//		for(int i = 0; i < numCities; i++) {
+//			if (map[visited[x].getIndex()][i] != 0 && !Arrays.asList(visited).contains(cities[i])) //if the city a and city b are adjacent to each other and city b has not already been visited
+//				stack.push(cities[i]);
+//		}
+		
+		return visited;
+
 	}
 	
 	public static void main(String[] args) {
@@ -155,7 +193,7 @@ public class Map {
 //		System.out.println("num cities: " + numCities);
 		printMap();
 		System.out.println(Arrays.toString(traverseAllCities(0, new City[numCities], new Stack<City>(), cities[0])));
-		System.out.println(Arrays.toString(traverse(0, new City[numCities], new Stack<City>(), cities[2], cities[0])));
+//		System.out.println(Arrays.toString(traverse(0, new City[numCities], new Stack<City>(), cities[2], cities[0])));
 	}
 
 }
