@@ -152,6 +152,8 @@ public class Map {
 			distance += map[visited[i].getIndex()][visited[i+1].getIndex()]; //check if null?
 		if (visited[visited.length-1] != null)
 			distance += map[0][visited[visited.length-1].getIndex()];
+		if (visited[0] != null && !visited[0].equals(cities[0]))
+			distance += map[0][visited[0].getIndex()];
 		return distance;
 	}
 	
@@ -164,13 +166,24 @@ public class Map {
 			return findBestPath(0, 0, bestPath, new City[numCities], new Stack<City>());
 		}
 		
-		//idk how to do this:
+		//idk how to do this but these are my guesses ig
 			//set index 0 of visited, then use traverse method to find all possible permutations starting with index 0 (then increase index)
 				//won't work - traverse could repeat (check before transferring to visited array?)
-		
-		
-//		for(int i = y; i < visited.length; i++)
-//			visited[x] = cities[y];
+		visited[0] = cities[x];
+		for(int i = 1; i < visited.length; i++) {
+			City[] possibleEnd = new City[numCities - x];
+			if (i != x) {
+				possibleEnd = traverse(0, new City[numCities - x], new Stack<City>(), cities[y], cities[0]); //finds a path back to the root starting at cities[y]
+				for(int j = 0; j < possibleEnd.length; j++)
+					if (!Arrays.asList(visited).contains(possibleEnd[j])) { //copies the cities that haven't been visited yet
+						visited[i] = possibleEnd[j];
+						i++;
+					}
+			}
+		}
+		if(totalDistance(visited) < totalDistance(bestPath))
+			bestPath = visited;
+		return findBestPath(0, 0, bestPath, new City[numCities], new Stack<City>());
 		
 		
 		
@@ -183,8 +196,6 @@ public class Map {
 //			if (map[visited[x].getIndex()][i] != 0 && !Arrays.asList(visited).contains(cities[i])) //if the city a and city b are adjacent to each other and city b has not already been visited
 //				stack.push(cities[i]);
 //		}
-		
-		return visited;
 
 	}
 	
