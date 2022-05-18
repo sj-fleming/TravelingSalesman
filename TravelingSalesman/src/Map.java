@@ -148,42 +148,47 @@ public class Map {
 	
 	public static int totalDistance(City[] visited) {
 		int distance = 0;
-		for(int i = 0; i < visited.length - 1; i++)
-			distance += map[visited[i].getIndex()][visited[i+1].getIndex()]; //check if null?
-		if (visited[visited.length-1] != null)
-			distance += map[0][visited[visited.length-1].getIndex()];
-		if (visited[0] != null && !visited[0].equals(cities[0]))
-			distance += map[0][visited[0].getIndex()];
+		if(visited[0] != null) {
+			for(int i = 0; i < visited.length - 1; i++)
+				distance += map[visited[i].getIndex()][visited[i+1].getIndex()]; //check if null?
+			if (visited[visited.length-1] != null)
+				distance += map[0][visited[visited.length-1].getIndex()];
+			if (visited[0] != null && !visited[0].equals(cities[0]))
+				distance += map[0][visited[0].getIndex()];
+		}
 		return distance;
 	}
 	
 	public static City[] findBestPath(int x, int y, City[] bestPath, City[] visited, Stack<City> stack) {
 		if(x == visited.length)
 			return bestPath;
-		if(y == visited.length) {
-			if(totalDistance(visited) < totalDistance(bestPath))
-				bestPath = visited;
-			return findBestPath(0, 0, bestPath, new City[numCities], new Stack<City>());
-		}
+//		if(y == visited.length) {
+//			if(totalDistance(visited) < totalDistance(bestPath))
+//				bestPath = visited;
+//			findBestPath(0, 0, bestPath, new City[numCities], new Stack<City>());
+//		}
 		
-		//idk how to do this but these are my guesses ig
-			//set index 0 of visited, then use traverse method to find all possible permutations starting with index 0 (then increase index)
-				//won't work - traverse could repeat (check before transferring to visited array?)
-		visited[0] = cities[x];
-		for(int i = 1; i < visited.length; i++) {
+		visited[x] = cities[x];
+		for(int i = 0; i < visited.length; i++) {
 			City[] possibleEnd = new City[numCities - x];
+//			System.out.println("test");
 			if (i != x) {
+//				System.out.println("test2");
 				possibleEnd = traverse(0, new City[numCities - x], new Stack<City>(), cities[y], cities[0]); //finds a path back to the root starting at cities[y]
+//				System.out.println("possible end: " + Arrays.toString(possibleEnd));
 				for(int j = 0; j < possibleEnd.length; j++)
 					if (!Arrays.asList(visited).contains(possibleEnd[j])) { //copies the cities that haven't been visited yet
 						visited[i] = possibleEnd[j];
 						i++;
+//						System.out.println("run");
 					}
-			}
+				}
+			//recurse here?
 		}
+		System.out.println("visited: " + Arrays.toString(visited));
 		if(totalDistance(visited) < totalDistance(bestPath))
 			bestPath = visited;
-		return findBestPath(0, 0, bestPath, new City[numCities], new Stack<City>());
+		return findBestPath(x+1, 1, bestPath, visited, new Stack<City>());
 		
 		
 		
@@ -203,8 +208,10 @@ public class Map {
 		createMap();
 //		System.out.println("num cities: " + numCities);
 		printMap();
-		System.out.println(Arrays.toString(traverseAllCities(0, new City[numCities], new Stack<City>(), cities[0])));
+//		System.out.println(Arrays.toString(traverseAllCities(0, new City[numCities], new Stack<City>(), cities[0])));
 //		System.out.println(Arrays.toString(traverse(0, new City[numCities], new Stack<City>(), cities[2], cities[0])));
+//		System.out.println(Arrays.toString(traverse(0, new City[numCities - 0], new Stack<City>(), cities[1], cities[0])));
+		System.out.println(Arrays.toString(findBestPath(0, 1, new City[numCities], new City[numCities], new Stack<City>())));
 	}
 
 }
