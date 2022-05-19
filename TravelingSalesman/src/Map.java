@@ -169,11 +169,11 @@ public class Map {
 //		}
 		
 		visited[x] = cities[x];
-		for(int i = 0; i < visited.length; i++) {
+		for(int i = x; i < visited.length; i++) {
 			City[] possibleEnd = new City[numCities - x];
 //			System.out.println("test");
-			if (i != x) {
-//				System.out.println("test2");
+//			if (i != x) {
+				System.out.println("test2");
 				possibleEnd = traverse(0, new City[numCities - x], new Stack<City>(), cities[y], cities[0]); //finds a path back to the root starting at cities[y]
 //				System.out.println("possible end: " + Arrays.toString(possibleEnd));
 				for(int j = 0; j < possibleEnd.length; j++)
@@ -182,7 +182,7 @@ public class Map {
 						i++;
 //						System.out.println("run");
 					}
-				}
+//				}
 			//recurse here?
 		}
 		System.out.println("visited: " + Arrays.toString(visited));
